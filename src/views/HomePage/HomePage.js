@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { fetchTrendingMovies } from 'services/movie-api';
-import PropTypes from 'prop-types';
 import MoviesList from 'components/MoviesList';
 import Title from 'components/Title';
 import Container from 'components/Container';
@@ -28,4 +27,3 @@ export default function HomePage() {
     </Section>
   );
 }
-
