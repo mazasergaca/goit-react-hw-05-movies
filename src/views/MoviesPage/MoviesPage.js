@@ -33,7 +33,6 @@ export default function MoviesPage() {
         })
         .catch(error => {
           setStatus('rejected');
-          toast.error('Please enter another text');
         });
     }
   }, [searchParam]);
