@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
+import slugify from 'slugify';
 import styled from 'styled-components';
 import { shape } from 'prop-types';
+import defaultPoster from '../../images/not-found-poster.png';
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -38,6 +40,8 @@ const StyledNameMovie = styled.p`
   text-align: center;
 `;
 
+const makeSlug = string => slugify(string, { lower: true });
+
 export default function MoviesList({ movies }) {
   const location = useLocation();
   return (
@@ -46,14 +50,20 @@ export default function MoviesList({ movies }) {
         <StyledArticle key={movie.id}>
           <Link
             to={{
-              pathname: `/movies/${movie.id}`,
+              pathname: `/movies/${makeSlug(
+                `${movie.title ? movie.title : movie.name} ${movie.id}`
+              )}`,
             }}
             state={{ from: { location } }}
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <StyledContainer>
               <StyledPoster
-                src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/original${movie.poster_path}`
+                    : defaultPoster
+                }
               />
             </StyledContainer>
 

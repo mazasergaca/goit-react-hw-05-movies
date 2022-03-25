@@ -17,7 +17,7 @@ const StyledTitle = styled.h2`
 export default function NotFoundMovies() {
   return (
     <StyledContainer>
-      <StyledTitle>Not found movies</StyledTitle>
+      <StyledTitle>Not found movie</StyledTitle>
       <img src={cryFaceImage} alt="crying face" width="200" />
     </StyledContainer>
   );

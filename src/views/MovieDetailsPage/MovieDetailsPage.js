@@ -9,11 +9,13 @@ import {
 } from 'react-router-dom';
 import { fetchMoviesById } from 'services/movie-api';
 import { RotatingLines } from 'react-loader-spinner';
+import makeIdFromSlug from 'services/slugs';
 import defaultPoster from '../../images/not-found-poster.png';
 import styled from 'styled-components';
 import Spinner from 'components/Spinner';
 import Container from 'components/Container';
 import Section from 'components/Section';
+import NotFoundMovies from 'components/NotFoundMovies';
 
 const Cast = lazy(() => import('views/Cast'));
 const Reviews = lazy(() => import('views/Reviews'));
@@ -96,20 +98,25 @@ const LinkStyled = ({ isActive }) => ({
 });
 
 export default function MovieDetailsPage() {
-  const [movie, setMovie] = useState(null);
+  const [movie, setMovie] = useState([]);
   const [status, setStatus] = useState('idle');
 
-  const { id } = useParams();
+  const { slug } = useParams();
+  const movieId = makeIdFromSlug(slug);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     setStatus('pending');
-    fetchMoviesById(id).then(res => {
-      setMovie(res);
-      setStatus('resolved');
-    });
-  }, [id]);
+    fetchMoviesById(movieId)
+      .then(res => {
+        setMovie(res);
+        setStatus('resolved');
+      })
+      .catch(error => {
+        setStatus('rejected');
+      });
+  }, [movieId]);
 
   const onClickBack = () => {
     navigate(location?.state?.from?.location ?? '/movies');
@@ -122,6 +129,7 @@ export default function MovieDetailsPage() {
           Go Back
         </StyledButton>
         {status === 'pending' && <Spinner />}
+        {status === 'rejected' && <NotFoundMovies />}
         {movie && status === 'resolved' && (
           <>
             <StyledArticle>

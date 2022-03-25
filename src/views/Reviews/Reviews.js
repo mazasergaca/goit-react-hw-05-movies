@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchMovieReviews } from 'services/movie-api';
 import { useParams } from 'react-router-dom';
+import makeIdFromSlug from 'services/slugs';
 import styled from 'styled-components';
 import defaultAvatar from '../../images/default-avatar.png';
 import Spinner from 'components/Spinner';
@@ -52,15 +53,16 @@ export default function Reviews() {
   const [reviews, setReviews] = useState([]);
   const [status, setStatus] = useState('idle');
 
-  const { id } = useParams();
+  const { slug } = useParams();
+  const movieId = makeIdFromSlug(slug);
 
   useEffect(() => {
     setStatus('pending');
-    fetchMovieReviews(id).then(res => {
+    fetchMovieReviews(movieId).then(res => {
       setReviews(res);
       setStatus('resolved');
     });
-  }, [id]);
+  }, [movieId]);
 
   return (
     <>

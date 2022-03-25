@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import defaultAvatar from '../../images/default-avatar.png';
+import makeIdFromSlug from 'services/slugs';
 import { fetchMovieCredits } from 'services/movie-api';
 import styled from 'styled-components';
 import Spinner from 'components/Spinner';
@@ -47,15 +48,16 @@ export default function Cast() {
   const [actors, setActors] = useState(null);
   const [status, setStatus] = useState('idle');
 
-  const { id } = useParams();
+  const { slug } = useParams();
+  const movieId = makeIdFromSlug(slug);
 
   useEffect(() => {
     setStatus('pending');
-    fetchMovieCredits(id).then(res => {
+    fetchMovieCredits(movieId).then(res => {
       setActors(res);
       setStatus('resolved');
     });
-  }, [id]);
+  }, [movieId]);
 
   return (
     <>
