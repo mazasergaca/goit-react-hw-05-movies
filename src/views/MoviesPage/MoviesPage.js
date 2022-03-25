@@ -36,7 +36,7 @@ export default function MoviesPage() {
           toast.error('Please enter another text');
         });
     }
-  }, []);
+  }, [searchParam]);
 
   function onSubmitForm(e) {
     e.preventDefault();
