@@ -35,7 +35,7 @@ export default function MoviesPage() {
           setStatus('rejected');
         });
     }
-  }, [searchParam]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function onSubmitForm(e) {
     e.preventDefault();

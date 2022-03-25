@@ -100,11 +100,14 @@ const LinkStyled = ({ isActive }) => ({
 export default function MovieDetailsPage() {
   const [movie, setMovie] = useState([]);
   const [status, setStatus] = useState('idle');
+  const [location, setLocation] = useState(null);
 
   const { slug } = useParams();
   const movieId = makeIdFromSlug(slug);
-  const location = useLocation();
+  const currentLocation = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => setLocation(currentLocation), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setStatus('pending');
